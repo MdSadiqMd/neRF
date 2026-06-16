@@ -1,0 +1,39 @@
+default:
+  just --list
+
+# Install dependencies
+install:
+    uv sync
+
+# Download and prepare training data
+prepare:
+    uv run python prepare_data.py
+
+# Run the KiloNeRF training
+train:
+    uv run python main.py
+
+# Full setup: install deps + prepare data + run
+all: install prepare train
+
+# Type check with pyright
+check:
+    uv run pyright main.py
+
+# Format code
+fmt:
+    uv run ruff format .
+
+# Lint code
+lint:
+    uv run ruff check .
+
+# Clean generated files
+clean:
+    rm -rf novel_views/*.png
+    rm -rf __pycache__
+    rm -rf .ruff_cache
+
+# Clean everything including data
+clean-all: clean
+    rm -f training_data.pkl testing_data.pkl tiny_nerf_data.npz
