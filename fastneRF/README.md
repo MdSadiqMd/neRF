@@ -6,10 +6,12 @@ Paper: https://arxiv.org/abs/2103.10380
 
 ## What's implemented
 
-- Factorized architecture: separate position (Fpos) and direction (Fdir) networks
-- Position network outputs sigma + UV weights for compact radiance caching
-- Direction network outputs beta weights for view-dependent color mixing
+- **Factorized architecture**: two independent networks decouple position and direction
+  - `Fpos`: maps 3D position → sigma (density) + U/V/W feature vectors (`D`-dim each)
+  - `Fdir`: maps ray direction → beta weights (softmax mixing coefficients)
+- **Compact radiance representation**: color is computed as `sum(beta * uvw)` — a dot product between direction weights and position features
 - Softplus activation for density, sigmoid for UV weights, softmax for beta
+- **Cache module**: precomputes the full `Fpos` and `Fdir` outputs over a voxel grid at inference time, reducing rendering to fast table lookups
 - Volume rendering with accumulated transmittance
 - White background regularization
 

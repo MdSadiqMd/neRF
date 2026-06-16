@@ -22,3 +22,22 @@ PyTorch implementations of Neural Radiance Fields variants for view synthesis.
    - **Factorization trade-off**: Separating position/direction networks reduces capacity for modeling complex view-dependent effects
    
    FastNeRF prioritizes real-time inference (200fps) over image quality - this is the expected trade-off from the paper.
+
+3. **[kiloneRF/](./kiloneRF/)** - Grid of thousands of tiny MLPs
+   
+   Partitions the scene into an N×N×N grid where each cell has its own tiny MLP. Points are routed to their cell's network, enabling massive parallelism. Designed for real-time rendering with custom CUDA kernels.
+   
+   Paper: https://arxiv.org/abs/2103.13744
+   
+   **Why KiloNeRF produces poor quality (and is slow):**
+   
+   The current implementation is fundamentally incomplete. The paper states: "using teacher-student distillation for training, we show that this speed-up can be achieved without sacrificing visual quality."
+   
+   | Issue | Current Implementation | Paper's Approach |
+   |-------|----------------------|------------------|
+   | Training | Direct from RGB images | Teacher-student distillation from pre-trained NeRF |
+   | Architecture | 32-dim tiny MLPs learning from scratch | Tiny MLPs distilled from 256-dim teacher |
+   | Grid boundaries | Hard boundaries, no interpolation | Occupancy-aware sampling |
+   | Performance | Python indexed matmul (slow) | Custom CUDA kernels (fast) |
+   
+   Without distillation, each tiny MLP only sees sparse samples from its grid cell and cannot learn a good representation. The blocky artifacts are from hard cell boundaries. The slowness is because KiloNeRF requires custom CUDA kernels to achieve the claimed 3 orders of magnitude speedup.
