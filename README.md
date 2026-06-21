@@ -41,3 +41,17 @@ PyTorch implementations of Neural Radiance Fields variants for view synthesis.
    | Performance | Python indexed matmul (slow) | Custom CUDA kernels (fast) |
    
    Without distillation, each tiny MLP only sees sparse samples from its grid cell and cannot learn a good representation. The blocky artifacts are from hard cell boundaries. The slowness is because KiloNeRF requires custom CUDA kernels to achieve the claimed 3 orders of magnitude speedup.
+
+4. **[inverseRendering/](./inverseRendering/)** - Fourier Feature NeRF
+   
+   Uses Random Fourier Features instead of deterministic positional encoding. Maps inputs through `sin/cos(x @ B)` where B is a random Gaussian matrix, making the neural tangent kernel stationary with tunable bandwidth. No view-direction dependency.
+   
+   Paper: https://arxiv.org/abs/2006.10739
+   
+   **Why quality is poor despite fast training:**
+   - **No view-direction input**: Cannot model view-dependent effects (specular, reflections)
+   - **Random encoding**: The random matrix B may not be optimal; deterministic powers-of-2 encoding is better suited for multi-scale scenes
+   - **Simpler architecture**: 4-layer MLP vs NeRF's 8-layer with skip connections
+   - **No hierarchical sampling**: Uses uniform sampling instead of coarse-to-fine
+   
+   The paper's contribution is theoretical (NTK analysis) - the Fourier feature insight was incorporated into NeRF's positional encoding design, not meant as a standalone replacement.
