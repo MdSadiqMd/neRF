@@ -65,3 +65,11 @@ PyTorch implementations of Neural Radiance Fields variants for view synthesis.
    **Limitation: Forward-facing scenes only.**
    
    The joint optimization can recover accurate cameras for forward-facing scenes where cameras share a roughly consistent viewing direction. For 360-degree scenes (like tiny_nerf), camera pose estimation from scratch fails due to too many degrees of freedom and local minima. Use ground truth cameras for 360-degree scenes.
+
+6. **[freeneRF/](./freeneRF/)** - Few-shot NeRF with frequency regularization
+   
+   Two "free lunch" techniques for few-shot neural rendering: (1) progressively unmask positional encoding frequencies during training, and (2) penalize near-camera density to prevent floaters. Achieves state-of-the-art few-shot performance with minimal code changes.
+   
+   Paper: https://arxiv.org/abs/2303.07418
+   
+   **Key insight**: Limit high-frequency encoding early in training to force learning robust low-frequency structure first, preventing overfitting when training views are scarce.
