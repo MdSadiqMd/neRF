@@ -81,3 +81,11 @@ PyTorch implementations of Neural Radiance Fields variants for view synthesis.
    Paper: https://arxiv.org/abs/2103.14024
    
    **Key insight**: Factorize view-dependent appearance into position-dependent SH coefficients (cacheable) and direction-dependent SH basis functions (cheap closed-form). This implementation covers the NeRF-SH training phase only.
+
+8. **[kplanes/](./kplanes/)** - Explicit radiance fields with feature planes
+   
+   Uses 3 axis-aligned 2D feature planes (XY, YZ, XZ) instead of an MLP. Features are sampled via bilinear interpolation and combined via Hadamard product before decoding to density/color. Achieves 1000x compression over a full 4D grid with fast pure-PyTorch optimization.
+   
+   Paper: https://arxiv.org/abs/2301.10241
+   
+   **Key insight**: Factorize 3D space into 2D planes. Easy to extend to d=4 (dynamic scenes) by adding time-dependent planes.
