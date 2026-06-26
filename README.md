@@ -55,3 +55,13 @@ PyTorch implementations of Neural Radiance Fields variants for view synthesis.
    - **No hierarchical sampling**: Uses uniform sampling instead of coarse-to-fine
    
    The paper's contribution is theoretical (NTK analysis) - the Fourier feature insight was incorporated into NeRF's positional encoding design, not meant as a standalone replacement.
+
+5. **[nerf-minus-minus/](./nerf-minus-minus/)** - NeRF without known camera parameters
+   
+   Jointly optimizes camera intrinsics (focal length), extrinsics (6-DoF poses), and the NeRF model through photometric loss. Removes the need for COLMAP/SfM preprocessing.
+   
+   Paper: https://arxiv.org/abs/2102.07064
+   
+   **Limitation: Forward-facing scenes only.**
+   
+   The joint optimization can recover accurate cameras for forward-facing scenes where cameras share a roughly consistent viewing direction. For 360-degree scenes (like tiny_nerf), camera pose estimation from scratch fails due to too many degrees of freedom and local minima. Use ground truth cameras for 360-degree scenes.
