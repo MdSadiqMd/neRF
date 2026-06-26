@@ -73,3 +73,11 @@ PyTorch implementations of Neural Radiance Fields variants for view synthesis.
    Paper: https://arxiv.org/abs/2303.07418
    
    **Key insight**: Limit high-frequency encoding early in training to force learning robust low-frequency structure first, preventing overfitting when training views are scarce.
+
+7. **[plenOctrees/](./plenOctrees/)** - Spherical Harmonic NeRF for real-time rendering
+   
+   Network outputs spherical harmonic (SH) coefficients instead of view-dependent RGB. Removes viewing direction as network input - view dependence is encoded in SH coefficients that are evaluated at render time. Enables pre-tabulation into an octree for 150+ FPS rendering.
+   
+   Paper: https://arxiv.org/abs/2103.14024
+   
+   **Key insight**: Factorize view-dependent appearance into position-dependent SH coefficients (cacheable) and direction-dependent SH basis functions (cheap closed-form). This implementation covers the NeRF-SH training phase only.
