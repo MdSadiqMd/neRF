@@ -89,3 +89,23 @@ PyTorch implementations of Neural Radiance Fields variants for view synthesis.
    Paper: https://arxiv.org/abs/2301.10241
    
    **Key insight**: Factorize 3D space into 2D planes. Easy to extend to d=4 (dynamic scenes) by adding time-dependent planes.
+
+9. **[infoneRF/](./infoneRF/)** - Few-shot NeRF with ray entropy regularization
+   
+   Standard NeRF with an information-theoretic regularizer: minimizes entropy of the normalized alpha weights along each ray. This penalizes spread-out density (floaters) and encourages compact surface representations. Uses only 4 training images.
+   
+   Paper: https://arxiv.org/abs/2112.15399
+   
+   **Key insight**: H(p) = -∑ p_k log(p_k) where p_k = α_k / ∑ α_k. Minimizing ray entropy makes density distributions peak sharply at surfaces, preventing floaters in few-shot settings.
+
+10. **[plenOxels/](./plenOxels/)** - Plenoxels: Radiance Fields without Neural Networks
+
+   Dense 3D voxel grid storing density and spherical harmonic (SH) coefficients. Trilinear interpolation for smooth sampling, SH degree-2 for view-dependent color. Pure gradient optimization — no MLP at all. 58.7M parameters (128³ × 28 channels). Faster training than NeRF but blockier quality due to fixed grid resolution.
+
+   Paper: https://arxiv.org/abs/2112.05131
+
+   **Why quality is lower than NeRF:**
+   - Dense grid wastes capacity on empty space (paper uses sparse octree)
+   - Fixed resolution cannot adapt to scene complexity
+   - No hierarchical sampling
+   - No TV regularization or coarse-to-fine
