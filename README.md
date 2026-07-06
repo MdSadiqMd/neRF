@@ -109,3 +109,13 @@ PyTorch implementations of Neural Radiance Fields variants for view synthesis.
    - Fixed resolution cannot adapt to scene complexity
    - No hierarchical sampling
    - No TV regularization or coarse-to-fine
+
+11. **[learnedInitializations/](./learnedInitializations/)** - Meta-learned initialization for NeRF
+   
+   Uses Reptile (first-order MAML) to learn weight initializations for NeRF that adapt quickly to novel views from few images. Meta-trains across random subsets of training views, then fine-tunes on only 4 test views to render the remaining 18. Achieves 57% lower MSE than random init after the same 5 epochs of fine-tuning.
+   
+   Paper: https://arxiv.org/abs/2012.02189
+   
+   **Key insight**: Learning a good initialization prior (φ) means that a few steps of SGD on limited data produces a much better model than starting from random weights. The Reptile update φ ← φ − α(φ − θ_K) pulls the initialization toward parameters that adapt successfully.
+   
+   **Note**: The paper demonstrates cross-scene meta-learning (different object categories). With a single Lego scene, this implementation demonstrates within-scene meta-learning (adapting from 4 views to 18 novel views).
