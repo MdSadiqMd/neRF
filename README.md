@@ -119,3 +119,11 @@ PyTorch implementations of Neural Radiance Fields variants for view synthesis.
    **Key insight**: Learning a good initialization prior (φ) means that a few steps of SGD on limited data produces a much better model than starting from random weights. The Reptile update φ ← φ − α(φ − θ_K) pulls the initialization toward parameters that adapt successfully.
    
    **Note**: The paper demonstrates cross-scene meta-learning (different object categories). With a single Lego scene, this implementation demonstrates within-scene meta-learning (adapting from 4 views to 18 novel views).
+
+12. **[instantNGP/](./instantNGP/)** - Instant Neural Graphics Primitives
+
+   Multi-resolution hash encoding with a tiny MLP. 16-level hash grid (16³→2048³ resolution) with 2D feature vectors per entry, trilinear interpolation, and XOR spatial hashing. Only ~21K MLP params (vs 1.2M for NeRF) — the hash encoding does the heavy lifting. Trains in ~8 min on MPS (vs ~30 min for standard NeRF).
+
+   Paper: https://arxiv.org/abs/2201.05989
+
+   **Key insight**: Replace NeRF's large MLP positional encoding with a multi-resolution hash table of trainable features. Low resolutions capture coarse structure (few collisions), high resolutions capture fine details (MLP disambiguates collisions). The hash grid acts as an adaptive learned encoding that compresses the scene's spatial information.
