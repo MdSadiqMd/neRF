@@ -127,3 +127,11 @@ PyTorch implementations of Neural Radiance Fields variants for view synthesis.
    Paper: https://arxiv.org/abs/2201.05989
 
    **Key insight**: Replace NeRF's large MLP positional encoding with a multi-resolution hash table of trainable features. Low resolutions capture coarse structure (few collisions), high resolutions capture fine details (MLP disambiguates collisions). The hash grid acts as an adaptive learned encoding that compresses the scene's spatial information.
+
+13. **[pixelNeRF/](./pixelNeRF/)** - Image-conditioned NeRF for single-view synthesis
+
+   ResNet34 image encoder produces pixel-aligned 512-dim features; NeRF MLP is conditioned on the feature sampled at the projection of each 3D point onto the source view. Points/directions are expressed in the source camera frame. Trained on single lego scene (84 views) with random src/tgt pairs, tested by conditioning on one test view to render all 22 novel views. Demonstrates the pixel-aligned conditioning pipeline albeit without cross-scene generalization.
+
+   Paper: https://arxiv.org/abs/2012.02190
+
+   **Key insight**: Project each 3D query point onto the input image, bilinearly sample a CNN feature at that pixel, and let a small MLP condition on that feature plus positional encoding. This gives the NeRF a strong image prior, enabling novel view synthesis from a single image without per-scene optimization.
