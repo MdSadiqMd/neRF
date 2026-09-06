@@ -1,7 +1,7 @@
 [project]
 name = "pixelnerf"
 version = "0.1.0"
-description = "Add your description here"
+description = "PixelNeRF: Neural Radiance Fields from One or Few Images (CVPR 2021)"
 readme = "README.md"
 authors = [
     { name = "Md.Sadiq", email = "mohammadsadiq4950@gmail.com" }
@@ -10,14 +10,11 @@ requires-python = ">=3.13"
 dependencies = [
     "matplotlib>=3.11.1",
     "numpy>=2.5.2",
+    "pillow>=11.0.0",
     "ruff>=0.16.6",
     "torch>=2.14.0",
+    "torchvision>=0.23.0",
     "tqdm>=4.70.0",
 ]
 
-[project.scripts]
-pixelnerf = "pixelnerf:main"
 
-[build-system]
-requires = ["uv_build>=0.12.8,<0.13.0"]
-build-backend = "uv_build"
